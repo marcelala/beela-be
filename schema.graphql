@@ -115,7 +115,7 @@ input FloatFilterInput {
   startsWith: Float
 }
 
-union GenericMorph = I18NLocale | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser
+union GenericMorph = I18NLocale | Page | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser
 
 type I18NLocale {
   code: String
@@ -267,6 +267,7 @@ input LongFilterInput {
 }
 
 type Mutation {
+  createPage(data: PageInput!): PageEntityResponse
   createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
 
   """Create a new role"""
@@ -274,6 +275,7 @@ type Mutation {
 
   """Create a new user"""
   createUsersPermissionsUser(data: UsersPermissionsUserInput!): UsersPermissionsUserEntityResponse!
+  deletePage(id: ID!): PageEntityResponse
   deleteUploadFile(id: ID!): UploadFileEntityResponse
 
   """Delete an existing role"""
@@ -299,6 +301,7 @@ type Mutation {
   """
   resetPassword(code: String!, password: String!, passwordConfirmation: String!): UsersPermissionsLoginPayload
   updateFileInfo(id: ID!, info: FileInfoInput): UploadFileEntityResponse!
+  updatePage(data: PageInput!, id: ID!): PageEntityResponse
   updateUploadFile(data: UploadFileInput!, id: ID!): UploadFileEntityResponse
 
   """Update an existing role"""
@@ -307,6 +310,47 @@ type Mutation {
   """Update an existing user"""
   updateUsersPermissionsUser(data: UsersPermissionsUserInput!, id: ID!): UsersPermissionsUserEntityResponse!
   upload(field: String, file: Upload!, info: FileInfoInput, ref: String, refId: ID): UploadFileEntityResponse!
+}
+
+type Page {
+  Name: String!
+  createdAt: DateTime
+  publishedAt: DateTime
+  updatedAt: DateTime
+}
+
+type PageEntity {
+  attributes: Page
+  id: ID
+}
+
+type PageEntityResponse {
+  data: PageEntity
+}
+
+type PageEntityResponseCollection {
+  data: [PageEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+input PageFiltersInput {
+  Name: StringFilterInput
+  and: [PageFiltersInput]
+  createdAt: DateTimeFilterInput
+  id: IDFilterInput
+  not: PageFiltersInput
+  or: [PageFiltersInput]
+  publishedAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+}
+
+input PageInput {
+  Name: String
+  publishedAt: DateTime
+}
+
+type PageRelationResponseCollection {
+  data: [PageEntity!]!
 }
 
 type Pagination {
@@ -332,6 +376,8 @@ type Query {
   i18NLocale(id: ID): I18NLocaleEntityResponse
   i18NLocales(filters: I18NLocaleFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): I18NLocaleEntityResponseCollection
   me: UsersPermissionsMe
+  page(id: ID): PageEntityResponse
+  pages(filters: PageFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): PageEntityResponseCollection
   uploadFile(id: ID): UploadFileEntityResponse
   uploadFiles(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileEntityResponseCollection
   usersPermissionsRole(id: ID): UsersPermissionsRoleEntityResponse
