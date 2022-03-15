@@ -1,5 +1,5 @@
 module.exports = ({ env }) => ({
-  host: env('HOST','0.0.0.0'),
+  host: env('LOCAL_HOST','0.0.0.0'),
   proxy: true,
   port: env.int('NODE_PORT', 1337),
   app: {
