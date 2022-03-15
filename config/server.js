@@ -1,9 +1,5 @@
-// const parse = require('pg-connection-string').parse;
-// const config = parse(process.env.DATABASE_URL);
-//
-
 module.exports = ({ env }) => ({
-  url: env('HEROKU'),
+  host: env('HOST','0.0.0.0'),
   proxy: true,
   port: env.int('NODE_PORT', 1337),
   app: {
