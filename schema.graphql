@@ -25,6 +25,113 @@ input BooleanFilterInput {
   startsWith: Boolean
 }
 
+type ComponentElementsImage {
+  alternativeText: String!
+  id: ID!
+  media: UploadFileEntityResponse!
+  relatedLink: ComponentElementsLink
+  title: String!
+}
+
+input ComponentElementsImageFiltersInput {
+  alternativeText: StringFilterInput
+  and: [ComponentElementsImageFiltersInput]
+  not: ComponentElementsImageFiltersInput
+  or: [ComponentElementsImageFiltersInput]
+  title: StringFilterInput
+}
+
+input ComponentElementsImageInput {
+  alternativeText: String
+  id: ID
+  media: ID
+  relatedLink: ComponentElementsLinkInput
+  title: String
+}
+
+type ComponentElementsLink {
+  id: ID!
+  label: String!
+  title: String!
+  url: String!
+}
+
+input ComponentElementsLinkFiltersInput {
+  and: [ComponentElementsLinkFiltersInput]
+  label: StringFilterInput
+  not: ComponentElementsLinkFiltersInput
+  or: [ComponentElementsLinkFiltersInput]
+  title: StringFilterInput
+  url: StringFilterInput
+}
+
+input ComponentElementsLinkInput {
+  id: ID
+  label: String
+  title: String
+  url: String
+}
+
+type ComponentLayoutNavigation {
+  id: ID!
+  navigationLinks(filters: ComponentElementsLinkFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentElementsLink]!
+  title: String!
+}
+
+input ComponentLayoutNavigationFiltersInput {
+  and: [ComponentLayoutNavigationFiltersInput]
+  not: ComponentLayoutNavigationFiltersInput
+  or: [ComponentLayoutNavigationFiltersInput]
+  title: StringFilterInput
+}
+
+input ComponentLayoutNavigationInput {
+  id: ID
+  navigationLinks: [ComponentElementsLinkInput]
+  title: String
+}
+
+type ComponentLayoutPage {
+  Title: String!
+  id: ID!
+  seo: ComponentLayoutSeo
+}
+
+input ComponentLayoutPageFiltersInput {
+  Title: StringFilterInput
+  and: [ComponentLayoutPageFiltersInput]
+  not: ComponentLayoutPageFiltersInput
+  or: [ComponentLayoutPageFiltersInput]
+}
+
+input ComponentLayoutPageInput {
+  Title: String
+  id: ID
+  seo: ComponentLayoutSeoInput
+}
+
+type ComponentLayoutSeo {
+  description: String!
+  id: ID!
+  image: UploadFileEntityResponse
+  title: String!
+}
+
+input ComponentLayoutSeoFiltersInput {
+  and: [ComponentLayoutSeoFiltersInput]
+  description: StringFilterInput
+  not: ComponentLayoutSeoFiltersInput
+  or: [ComponentLayoutSeoFiltersInput]
+  title: StringFilterInput
+}
+
+input ComponentLayoutSeoInput {
+  description: String
+  id: ID
+  image: ID
+  title: String
+}
+
 """
 A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -115,7 +222,7 @@ input FloatFilterInput {
   startsWith: Float
 }
 
-union GenericMorph = I18NLocale | Page | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser
+union GenericMorph = ComponentElementsImage | ComponentElementsLink | ComponentLayoutNavigation | ComponentLayoutPage | ComponentLayoutSeo | I18NLocale | LandingPage | Post | Tag | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser
 
 type I18NLocale {
   code: String
@@ -240,6 +347,45 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 """
 scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
+type LandingPage {
+  createdAt: DateTime
+  publishedAt: DateTime
+  seo(filters: ComponentLayoutSeoFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): [ComponentLayoutSeo]
+  updatedAt: DateTime
+}
+
+type LandingPageEntity {
+  attributes: LandingPage
+  id: ID
+}
+
+type LandingPageEntityResponse {
+  data: LandingPageEntity
+}
+
+type LandingPageEntityResponseCollection {
+  data: [LandingPageEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+input LandingPageFiltersInput {
+  and: [LandingPageFiltersInput]
+  createdAt: DateTimeFilterInput
+  not: LandingPageFiltersInput
+  or: [LandingPageFiltersInput]
+  publishedAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+}
+
+input LandingPageInput {
+  publishedAt: DateTime
+  seo: [ComponentLayoutSeoInput]
+}
+
+type LandingPageRelationResponseCollection {
+  data: [LandingPageEntity!]!
+}
+
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
@@ -267,7 +413,8 @@ input LongFilterInput {
 }
 
 type Mutation {
-  createPage(data: PageInput!): PageEntityResponse
+  createPost(data: PostInput!): PostEntityResponse
+  createTag(data: TagInput!): TagEntityResponse
   createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
 
   """Create a new role"""
@@ -275,7 +422,9 @@ type Mutation {
 
   """Create a new user"""
   createUsersPermissionsUser(data: UsersPermissionsUserInput!): UsersPermissionsUserEntityResponse!
-  deletePage(id: ID!): PageEntityResponse
+  deleteLandingPage: LandingPageEntityResponse
+  deletePost(id: ID!): PostEntityResponse
+  deleteTag(id: ID!): TagEntityResponse
   deleteUploadFile(id: ID!): UploadFileEntityResponse
 
   """Delete an existing role"""
@@ -301,7 +450,9 @@ type Mutation {
   """
   resetPassword(code: String!, password: String!, passwordConfirmation: String!): UsersPermissionsLoginPayload
   updateFileInfo(id: ID!, info: FileInfoInput): UploadFileEntityResponse!
-  updatePage(data: PageInput!, id: ID!): PageEntityResponse
+  updateLandingPage(data: LandingPageInput!): LandingPageEntityResponse
+  updatePost(data: PostInput!, id: ID!): PostEntityResponse
+  updateTag(data: TagInput!, id: ID!): TagEntityResponse
   updateUploadFile(data: UploadFileInput!, id: ID!): UploadFileEntityResponse
 
   """Update an existing role"""
@@ -310,47 +461,6 @@ type Mutation {
   """Update an existing user"""
   updateUsersPermissionsUser(data: UsersPermissionsUserInput!, id: ID!): UsersPermissionsUserEntityResponse!
   upload(field: String, file: Upload!, info: FileInfoInput, ref: String, refId: ID): UploadFileEntityResponse!
-}
-
-type Page {
-  Name: String!
-  createdAt: DateTime
-  publishedAt: DateTime
-  updatedAt: DateTime
-}
-
-type PageEntity {
-  attributes: Page
-  id: ID
-}
-
-type PageEntityResponse {
-  data: PageEntity
-}
-
-type PageEntityResponseCollection {
-  data: [PageEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-input PageFiltersInput {
-  Name: StringFilterInput
-  and: [PageFiltersInput]
-  createdAt: DateTimeFilterInput
-  id: IDFilterInput
-  not: PageFiltersInput
-  or: [PageFiltersInput]
-  publishedAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-}
-
-input PageInput {
-  Name: String
-  publishedAt: DateTime
-}
-
-type PageRelationResponseCollection {
-  data: [PageEntity!]!
 }
 
 type Pagination {
@@ -367,6 +477,56 @@ input PaginationArg {
   start: Int
 }
 
+type Post {
+  body: String!
+  createdAt: DateTime
+  date: Date!
+  publishedAt: DateTime
+  slug: String!
+  title: String!
+  updatedAt: DateTime
+}
+
+type PostEntity {
+  attributes: Post
+  id: ID
+}
+
+type PostEntityResponse {
+  data: PostEntity
+}
+
+type PostEntityResponseCollection {
+  data: [PostEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+input PostFiltersInput {
+  and: [PostFiltersInput]
+  body: StringFilterInput
+  createdAt: DateTimeFilterInput
+  date: DateFilterInput
+  id: IDFilterInput
+  not: PostFiltersInput
+  or: [PostFiltersInput]
+  publishedAt: DateTimeFilterInput
+  slug: StringFilterInput
+  title: StringFilterInput
+  updatedAt: DateTimeFilterInput
+}
+
+input PostInput {
+  body: String
+  date: Date
+  publishedAt: DateTime
+  slug: String
+  title: String
+}
+
+type PostRelationResponseCollection {
+  data: [PostEntity!]!
+}
+
 enum PublicationState {
   LIVE
   PREVIEW
@@ -375,9 +535,12 @@ enum PublicationState {
 type Query {
   i18NLocale(id: ID): I18NLocaleEntityResponse
   i18NLocales(filters: I18NLocaleFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): I18NLocaleEntityResponseCollection
+  landingPage(publicationState: PublicationState = LIVE): LandingPageEntityResponse
   me: UsersPermissionsMe
-  page(id: ID): PageEntityResponse
-  pages(filters: PageFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): PageEntityResponseCollection
+  post(id: ID): PostEntityResponse
+  posts(filters: PostFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): PostEntityResponseCollection
+  tag(id: ID): TagEntityResponse
+  tags(filters: TagFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): TagEntityResponseCollection
   uploadFile(id: ID): UploadFileEntityResponse
   uploadFiles(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileEntityResponseCollection
   usersPermissionsRole(id: ID): UsersPermissionsRoleEntityResponse
@@ -411,6 +574,50 @@ input StringFilterInput {
   null: Boolean
   or: [String]
   startsWith: String
+}
+
+type Tag {
+  createdAt: DateTime
+  publishedAt: DateTime
+  slug: String!
+  title: String
+  updatedAt: DateTime
+}
+
+type TagEntity {
+  attributes: Tag
+  id: ID
+}
+
+type TagEntityResponse {
+  data: TagEntity
+}
+
+type TagEntityResponseCollection {
+  data: [TagEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+input TagFiltersInput {
+  and: [TagFiltersInput]
+  createdAt: DateTimeFilterInput
+  id: IDFilterInput
+  not: TagFiltersInput
+  or: [TagFiltersInput]
+  publishedAt: DateTimeFilterInput
+  slug: StringFilterInput
+  title: StringFilterInput
+  updatedAt: DateTimeFilterInput
+}
+
+input TagInput {
+  publishedAt: DateTime
+  slug: String
+  title: String
+}
+
+type TagRelationResponseCollection {
+  data: [TagEntity!]!
 }
 
 """A time string with format HH:mm:ss.SSS"""
@@ -661,10 +868,13 @@ type UsersPermissionsUpdateRolePayload {
 }
 
 type UsersPermissionsUser {
+  avatar: UploadFileEntityResponse
   blocked: Boolean
   confirmed: Boolean
   createdAt: DateTime
   email: String!
+  firstName: String!
+  lastName: String!
   provider: String
   role: UsersPermissionsRoleEntityResponse
   updatedAt: DateTime
@@ -692,7 +902,9 @@ input UsersPermissionsUserFiltersInput {
   confirmed: BooleanFilterInput
   createdAt: DateTimeFilterInput
   email: StringFilterInput
+  firstName: StringFilterInput
   id: IDFilterInput
+  lastName: StringFilterInput
   not: UsersPermissionsUserFiltersInput
   or: [UsersPermissionsUserFiltersInput]
   password: StringFilterInput
@@ -704,10 +916,13 @@ input UsersPermissionsUserFiltersInput {
 }
 
 input UsersPermissionsUserInput {
+  avatar: ID
   blocked: Boolean
   confirmationToken: String
   confirmed: Boolean
   email: String
+  firstName: String
+  lastName: String
   password: String
   provider: String
   resetPasswordToken: String

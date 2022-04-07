@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_elements_images",
+  "info": {
+    "displayName": "image",
+    "icon": "photo-video",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "media": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "alternativeText": {
+      "type": "string",
+      "required": true
+    },
+    "relatedLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "elements.link"
+    }
+  }
+}

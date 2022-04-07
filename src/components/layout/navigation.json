@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_layout_navigations",
+  "info": {
+    "displayName": "navigation",
+    "icon": "bars",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "navigationLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "elements.link",
+      "required": true
+    }
+  }
+}
