@@ -1,5 +1,5 @@
 
-#Beela Backend
+# Beela Backend
 
 This is the codebase for the backed of Beela's website and BeelaHive. It's built with Strapi.
 
@@ -9,17 +9,17 @@ The frontend codebase can be found [here](https://github.com/marcelala/beela-web
 
 ## Overview
 
-###Beela
+### Beela
 
 At Beela we are committed to decreasing the evident gap in the unemployment rate between foreign-born women, particularly those from non-European countries, and women and men born in Sweden.
 
 Making a career transition is hard. We help immigrant women and non-binary people define their path, get unblocked, and meet their learning goals. Passion brought us here, and we are empowering the next generation of talented immigrant women and non-binary people.
 
-###BeelaHive
+### BeelaHive
 
 BeelaHive delivers resources to immigrant women and non-binary people aspiring to start or boost their careers in tech. Our content ranges from Web development, UI/UX design, Project Management, Backend and Frontend Software Engineering and more. Join our hive today!
 
-Click [here](https://beela-db.herokuapp.com/) to visit.
+Click [here](https://beela-be.herokuapp.com/) to visit.
 
 
 ## How to run the project
