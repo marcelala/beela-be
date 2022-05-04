@@ -6,6 +6,7 @@
   "scripts": {
     "develop": "strapi develop",
     "start": "NODE_ENV=production strapi start",
+    "staging": "NODE_ENV=staging strapi start",
     "build": "strapi build",
     "strapi": "strapi"
   },
