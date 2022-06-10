@@ -36,6 +36,21 @@ export interface NexusGenInputs {
     or?: Array<boolean | null> | null; // [Boolean]
     startsWith?: boolean | null; // Boolean
   }
+  ComponentElementsAuthorFiltersInput: { // input type
+    and?: Array<NexusGenInputs['ComponentElementsAuthorFiltersInput'] | null> | null; // [ComponentElementsAuthorFiltersInput]
+    authorInfo?: NexusGenInputs['StringFilterInput'] | null; // StringFilterInput
+    name?: NexusGenInputs['StringFilterInput'] | null; // StringFilterInput
+    not?: NexusGenInputs['ComponentElementsAuthorFiltersInput'] | null; // ComponentElementsAuthorFiltersInput
+    optionalAuthorInfo?: NexusGenInputs['StringFilterInput'] | null; // StringFilterInput
+    or?: Array<NexusGenInputs['ComponentElementsAuthorFiltersInput'] | null> | null; // [ComponentElementsAuthorFiltersInput]
+  }
+  ComponentElementsAuthorInput: { // input type
+    authorInfo?: string | null; // String
+    avatar?: string | null; // ID
+    id?: string | null; // ID
+    name?: string | null; // String
+    optionalAuthorInfo?: string | null; // String
+  }
   ComponentElementsImageFiltersInput: { // input type
     alternativeText?: NexusGenInputs['StringFilterInput'] | null; // StringFilterInput
     and?: Array<NexusGenInputs['ComponentElementsImageFiltersInput'] | null> | null; // [ComponentElementsImageFiltersInput]
@@ -336,6 +351,27 @@ export interface NexusGenInputs {
     slug?: string | null; // String
     title?: string | null; // String
   }
+  TestimonialFiltersInput: { // input type
+    and?: Array<NexusGenInputs['TestimonialFiltersInput'] | null> | null; // [TestimonialFiltersInput]
+    createdAt?: NexusGenInputs['DateTimeFilterInput'] | null; // DateTimeFilterInput
+    id?: NexusGenInputs['IDFilterInput'] | null; // IDFilterInput
+    locale?: NexusGenInputs['StringFilterInput'] | null; // StringFilterInput
+    localizations?: NexusGenInputs['TestimonialFiltersInput'] | null; // TestimonialFiltersInput
+    not?: NexusGenInputs['TestimonialFiltersInput'] | null; // TestimonialFiltersInput
+    or?: Array<NexusGenInputs['TestimonialFiltersInput'] | null> | null; // [TestimonialFiltersInput]
+    publishedAt?: NexusGenInputs['DateTimeFilterInput'] | null; // DateTimeFilterInput
+    slug?: NexusGenInputs['StringFilterInput'] | null; // StringFilterInput
+    text?: NexusGenInputs['StringFilterInput'] | null; // StringFilterInput
+    title?: NexusGenInputs['StringFilterInput'] | null; // StringFilterInput
+    updatedAt?: NexusGenInputs['DateTimeFilterInput'] | null; // DateTimeFilterInput
+  }
+  TestimonialInput: { // input type
+    author?: NexusGenInputs['ComponentElementsAuthorInput'] | null; // ComponentElementsAuthorInput
+    publishedAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    slug?: string | null; // String
+    text?: string | null; // String
+    title?: string | null; // String
+  }
   TimeFilterInput: { // input type
     and?: Array<NexusGenScalars['Time'] | null> | null; // [Time]
     between?: Array<NexusGenScalars['Time'] | null> | null; // [Time]
@@ -496,6 +532,12 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  ComponentElementsAuthor: { // root type
+    authorInfo: string; // String!
+    id: string; // ID!
+    name: string; // String!
+    optionalAuthorInfo?: string | null; // String
+  }
   ComponentElementsImage: { // root type
     alternativeText: string; // String!
     id: string; // ID!
@@ -566,6 +608,19 @@ export interface NexusGenObjects {
   TagEntityResponse: {};
   TagEntityResponseCollection: {};
   TagRelationResponseCollection: {};
+  Testimonial: { // root type
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    locale?: string | null; // String
+    publishedAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    slug: string; // String!
+    text: string; // String!
+    title: string; // String!
+    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
+  }
+  TestimonialEntity: {};
+  TestimonialEntityResponse: {};
+  TestimonialEntityResponseCollection: {};
+  TestimonialRelationResponseCollection: {};
   UploadFile: { // root type
     alternativeText?: string | null; // String
     caption?: string | null; // String
@@ -659,7 +714,7 @@ export interface NexusGenInterfaces {
 }
 
 export interface NexusGenUnions {
-  GenericMorph: NexusGenRootTypes['ComponentElementsImage'] | NexusGenRootTypes['ComponentElementsLink'] | NexusGenRootTypes['ComponentLayoutNavigation'] | NexusGenRootTypes['ComponentLayoutPage'] | NexusGenRootTypes['ComponentLayoutSeo'] | NexusGenRootTypes['I18NLocale'] | NexusGenRootTypes['Post'] | NexusGenRootTypes['Tag'] | NexusGenRootTypes['UploadFile'] | NexusGenRootTypes['UsersPermissionsPermission'] | NexusGenRootTypes['UsersPermissionsRole'] | NexusGenRootTypes['UsersPermissionsUser'];
+  GenericMorph: NexusGenRootTypes['ComponentElementsAuthor'] | NexusGenRootTypes['ComponentElementsImage'] | NexusGenRootTypes['ComponentElementsLink'] | NexusGenRootTypes['ComponentLayoutNavigation'] | NexusGenRootTypes['ComponentLayoutPage'] | NexusGenRootTypes['ComponentLayoutSeo'] | NexusGenRootTypes['I18NLocale'] | NexusGenRootTypes['Post'] | NexusGenRootTypes['Tag'] | NexusGenRootTypes['Testimonial'] | NexusGenRootTypes['UploadFile'] | NexusGenRootTypes['UsersPermissionsPermission'] | NexusGenRootTypes['UsersPermissionsRole'] | NexusGenRootTypes['UsersPermissionsUser'];
 }
 
 export type NexusGenRootTypes = NexusGenObjects & NexusGenUnions
@@ -667,6 +722,13 @@ export type NexusGenRootTypes = NexusGenObjects & NexusGenUnions
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  ComponentElementsAuthor: { // field return type
+    authorInfo: string; // String!
+    avatar: NexusGenRootTypes['UploadFileEntityResponse']; // UploadFileEntityResponse!
+    id: string; // ID!
+    name: string; // String!
+    optionalAuthorInfo: string | null; // String
+  }
   ComponentElementsImage: { // field return type
     alternativeText: string; // String!
     id: string; // ID!
@@ -723,11 +785,14 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createPost: NexusGenRootTypes['PostEntityResponse'] | null; // PostEntityResponse
     createTag: NexusGenRootTypes['TagEntityResponse'] | null; // TagEntityResponse
+    createTestimonial: NexusGenRootTypes['TestimonialEntityResponse'] | null; // TestimonialEntityResponse
+    createTestimonialLocalization: NexusGenRootTypes['TestimonialEntityResponse'] | null; // TestimonialEntityResponse
     createUploadFile: NexusGenRootTypes['UploadFileEntityResponse'] | null; // UploadFileEntityResponse
     createUsersPermissionsRole: NexusGenRootTypes['UsersPermissionsCreateRolePayload'] | null; // UsersPermissionsCreateRolePayload
     createUsersPermissionsUser: NexusGenRootTypes['UsersPermissionsUserEntityResponse']; // UsersPermissionsUserEntityResponse!
     deletePost: NexusGenRootTypes['PostEntityResponse'] | null; // PostEntityResponse
     deleteTag: NexusGenRootTypes['TagEntityResponse'] | null; // TagEntityResponse
+    deleteTestimonial: NexusGenRootTypes['TestimonialEntityResponse'] | null; // TestimonialEntityResponse
     deleteUploadFile: NexusGenRootTypes['UploadFileEntityResponse'] | null; // UploadFileEntityResponse
     deleteUsersPermissionsRole: NexusGenRootTypes['UsersPermissionsDeleteRolePayload'] | null; // UsersPermissionsDeleteRolePayload
     deleteUsersPermissionsUser: NexusGenRootTypes['UsersPermissionsUserEntityResponse']; // UsersPermissionsUserEntityResponse!
@@ -741,6 +806,7 @@ export interface NexusGenFieldTypes {
     updateFileInfo: NexusGenRootTypes['UploadFileEntityResponse']; // UploadFileEntityResponse!
     updatePost: NexusGenRootTypes['PostEntityResponse'] | null; // PostEntityResponse
     updateTag: NexusGenRootTypes['TagEntityResponse'] | null; // TagEntityResponse
+    updateTestimonial: NexusGenRootTypes['TestimonialEntityResponse'] | null; // TestimonialEntityResponse
     updateUploadFile: NexusGenRootTypes['UploadFileEntityResponse'] | null; // UploadFileEntityResponse
     updateUsersPermissionsRole: NexusGenRootTypes['UsersPermissionsUpdateRolePayload'] | null; // UsersPermissionsUpdateRolePayload
     updateUsersPermissionsUser: NexusGenRootTypes['UsersPermissionsUserEntityResponse']; // UsersPermissionsUserEntityResponse!
@@ -783,6 +849,8 @@ export interface NexusGenFieldTypes {
     posts: NexusGenRootTypes['PostEntityResponseCollection'] | null; // PostEntityResponseCollection
     tag: NexusGenRootTypes['TagEntityResponse'] | null; // TagEntityResponse
     tags: NexusGenRootTypes['TagEntityResponseCollection'] | null; // TagEntityResponseCollection
+    testimonial: NexusGenRootTypes['TestimonialEntityResponse'] | null; // TestimonialEntityResponse
+    testimonials: NexusGenRootTypes['TestimonialEntityResponseCollection'] | null; // TestimonialEntityResponseCollection
     uploadFile: NexusGenRootTypes['UploadFileEntityResponse'] | null; // UploadFileEntityResponse
     uploadFiles: NexusGenRootTypes['UploadFileEntityResponseCollection'] | null; // UploadFileEntityResponseCollection
     usersPermissionsRole: NexusGenRootTypes['UsersPermissionsRoleEntityResponse'] | null; // UsersPermissionsRoleEntityResponse
@@ -813,6 +881,31 @@ export interface NexusGenFieldTypes {
   }
   TagRelationResponseCollection: { // field return type
     data: NexusGenRootTypes['TagEntity'][]; // [TagEntity!]!
+  }
+  Testimonial: { // field return type
+    author: NexusGenRootTypes['ComponentElementsAuthor']; // ComponentElementsAuthor!
+    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
+    locale: string | null; // String
+    localizations: NexusGenRootTypes['TestimonialRelationResponseCollection'] | null; // TestimonialRelationResponseCollection
+    publishedAt: NexusGenScalars['DateTime'] | null; // DateTime
+    slug: string; // String!
+    text: string; // String!
+    title: string; // String!
+    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
+  }
+  TestimonialEntity: { // field return type
+    attributes: NexusGenRootTypes['Testimonial'] | null; // Testimonial
+    id: string | null; // ID
+  }
+  TestimonialEntityResponse: { // field return type
+    data: NexusGenRootTypes['TestimonialEntity'] | null; // TestimonialEntity
+  }
+  TestimonialEntityResponseCollection: { // field return type
+    data: NexusGenRootTypes['TestimonialEntity'][]; // [TestimonialEntity!]!
+    meta: NexusGenRootTypes['ResponseCollectionMeta']; // ResponseCollectionMeta!
+  }
+  TestimonialRelationResponseCollection: { // field return type
+    data: NexusGenRootTypes['TestimonialEntity'][]; // [TestimonialEntity!]!
   }
   UploadFile: { // field return type
     alternativeText: string | null; // String
@@ -950,6 +1043,13 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  ComponentElementsAuthor: { // field return type name
+    authorInfo: 'String'
+    avatar: 'UploadFileEntityResponse'
+    id: 'ID'
+    name: 'String'
+    optionalAuthorInfo: 'String'
+  }
   ComponentElementsImage: { // field return type name
     alternativeText: 'String'
     id: 'ID'
@@ -1006,11 +1106,14 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createPost: 'PostEntityResponse'
     createTag: 'TagEntityResponse'
+    createTestimonial: 'TestimonialEntityResponse'
+    createTestimonialLocalization: 'TestimonialEntityResponse'
     createUploadFile: 'UploadFileEntityResponse'
     createUsersPermissionsRole: 'UsersPermissionsCreateRolePayload'
     createUsersPermissionsUser: 'UsersPermissionsUserEntityResponse'
     deletePost: 'PostEntityResponse'
     deleteTag: 'TagEntityResponse'
+    deleteTestimonial: 'TestimonialEntityResponse'
     deleteUploadFile: 'UploadFileEntityResponse'
     deleteUsersPermissionsRole: 'UsersPermissionsDeleteRolePayload'
     deleteUsersPermissionsUser: 'UsersPermissionsUserEntityResponse'
@@ -1024,6 +1127,7 @@ export interface NexusGenFieldTypeNames {
     updateFileInfo: 'UploadFileEntityResponse'
     updatePost: 'PostEntityResponse'
     updateTag: 'TagEntityResponse'
+    updateTestimonial: 'TestimonialEntityResponse'
     updateUploadFile: 'UploadFileEntityResponse'
     updateUsersPermissionsRole: 'UsersPermissionsUpdateRolePayload'
     updateUsersPermissionsUser: 'UsersPermissionsUserEntityResponse'
@@ -1066,6 +1170,8 @@ export interface NexusGenFieldTypeNames {
     posts: 'PostEntityResponseCollection'
     tag: 'TagEntityResponse'
     tags: 'TagEntityResponseCollection'
+    testimonial: 'TestimonialEntityResponse'
+    testimonials: 'TestimonialEntityResponseCollection'
     uploadFile: 'UploadFileEntityResponse'
     uploadFiles: 'UploadFileEntityResponseCollection'
     usersPermissionsRole: 'UsersPermissionsRoleEntityResponse'
@@ -1096,6 +1202,31 @@ export interface NexusGenFieldTypeNames {
   }
   TagRelationResponseCollection: { // field return type name
     data: 'TagEntity'
+  }
+  Testimonial: { // field return type name
+    author: 'ComponentElementsAuthor'
+    createdAt: 'DateTime'
+    locale: 'String'
+    localizations: 'TestimonialRelationResponseCollection'
+    publishedAt: 'DateTime'
+    slug: 'String'
+    text: 'String'
+    title: 'String'
+    updatedAt: 'DateTime'
+  }
+  TestimonialEntity: { // field return type name
+    attributes: 'Testimonial'
+    id: 'ID'
+  }
+  TestimonialEntityResponse: { // field return type name
+    data: 'TestimonialEntity'
+  }
+  TestimonialEntityResponseCollection: { // field return type name
+    data: 'TestimonialEntity'
+    meta: 'ResponseCollectionMeta'
+  }
+  TestimonialRelationResponseCollection: { // field return type name
+    data: 'TestimonialEntity'
   }
   UploadFile: { // field return type name
     alternativeText: 'String'
@@ -1247,6 +1378,15 @@ export interface NexusGenArgTypes {
     createTag: { // args
       data: NexusGenInputs['TagInput']; // TagInput!
     }
+    createTestimonial: { // args
+      data: NexusGenInputs['TestimonialInput']; // TestimonialInput!
+      locale?: NexusGenScalars['I18NLocaleCode'] | null; // I18NLocaleCode
+    }
+    createTestimonialLocalization: { // args
+      data?: NexusGenInputs['TestimonialInput'] | null; // TestimonialInput
+      id?: string | null; // ID
+      locale?: NexusGenScalars['I18NLocaleCode'] | null; // I18NLocaleCode
+    }
     createUploadFile: { // args
       data: NexusGenInputs['UploadFileInput']; // UploadFileInput!
     }
@@ -1261,6 +1401,10 @@ export interface NexusGenArgTypes {
     }
     deleteTag: { // args
       id: string; // ID!
+    }
+    deleteTestimonial: { // args
+      id: string; // ID!
+      locale?: NexusGenScalars['I18NLocaleCode'] | null; // I18NLocaleCode
     }
     deleteUploadFile: { // args
       id: string; // ID!
@@ -1309,6 +1453,11 @@ export interface NexusGenArgTypes {
       data: NexusGenInputs['TagInput']; // TagInput!
       id: string; // ID!
     }
+    updateTestimonial: { // args
+      data: NexusGenInputs['TestimonialInput']; // TestimonialInput!
+      id: string; // ID!
+      locale?: NexusGenScalars['I18NLocaleCode'] | null; // I18NLocaleCode
+    }
     updateUploadFile: { // args
       data: NexusGenInputs['UploadFileInput']; // UploadFileInput!
       id: string; // ID!
@@ -1356,6 +1505,17 @@ export interface NexusGenArgTypes {
       publicationState: NexusGenEnums['PublicationState'] | null; // PublicationState
       sort: Array<string | null> | null; // [String]
     }
+    testimonial: { // args
+      id?: string | null; // ID
+      locale?: NexusGenScalars['I18NLocaleCode'] | null; // I18NLocaleCode
+    }
+    testimonials: { // args
+      filters?: NexusGenInputs['TestimonialFiltersInput'] | null; // TestimonialFiltersInput
+      locale?: NexusGenScalars['I18NLocaleCode'] | null; // I18NLocaleCode
+      pagination: NexusGenInputs['PaginationArg'] | null; // PaginationArg
+      publicationState: NexusGenEnums['PublicationState'] | null; // PublicationState
+      sort: Array<string | null> | null; // [String]
+    }
     uploadFile: { // args
       id?: string | null; // ID
     }
@@ -1381,6 +1541,14 @@ export interface NexusGenArgTypes {
       sort: Array<string | null> | null; // [String]
     }
   }
+  Testimonial: {
+    localizations: { // args
+      filters?: NexusGenInputs['TestimonialFiltersInput'] | null; // TestimonialFiltersInput
+      pagination: NexusGenInputs['PaginationArg'] | null; // PaginationArg
+      publicationState: NexusGenEnums['PublicationState'] | null; // PublicationState
+      sort: Array<string | null> | null; // [String]
+    }
+  }
   UsersPermissionsRole: {
     permissions: { // args
       filters?: NexusGenInputs['UsersPermissionsPermissionFiltersInput'] | null; // UsersPermissionsPermissionFiltersInput
@@ -1396,7 +1564,7 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractTypeMembers {
-  GenericMorph: "ComponentElementsImage" | "ComponentElementsLink" | "ComponentLayoutNavigation" | "ComponentLayoutPage" | "ComponentLayoutSeo" | "I18NLocale" | "Post" | "Tag" | "UploadFile" | "UsersPermissionsPermission" | "UsersPermissionsRole" | "UsersPermissionsUser"
+  GenericMorph: "ComponentElementsAuthor" | "ComponentElementsImage" | "ComponentElementsLink" | "ComponentLayoutNavigation" | "ComponentLayoutPage" | "ComponentLayoutSeo" | "I18NLocale" | "Post" | "Tag" | "Testimonial" | "UploadFile" | "UsersPermissionsPermission" | "UsersPermissionsRole" | "UsersPermissionsUser"
 }
 
 export interface NexusGenTypeInterfaces {

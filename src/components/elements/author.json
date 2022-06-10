@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_elements_authors",
+  "info": {
+    "displayName": "author",
+    "icon": "pen",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "authorInfo": {
+      "type": "string",
+      "required": true
+    },
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "optionalAuthorInfo": {
+      "type": "string"
+    }
+  }
+}
