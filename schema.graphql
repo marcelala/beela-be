@@ -25,6 +25,31 @@ input BooleanFilterInput {
   startsWith: Boolean
 }
 
+type ComponentElementsAuthor {
+  authorInfo: String!
+  avatar: UploadFileEntityResponse!
+  id: ID!
+  name: String!
+  optionalAuthorInfo: String
+}
+
+input ComponentElementsAuthorFiltersInput {
+  and: [ComponentElementsAuthorFiltersInput]
+  authorInfo: StringFilterInput
+  name: StringFilterInput
+  not: ComponentElementsAuthorFiltersInput
+  optionalAuthorInfo: StringFilterInput
+  or: [ComponentElementsAuthorFiltersInput]
+}
+
+input ComponentElementsAuthorInput {
+  authorInfo: String
+  avatar: ID
+  id: ID
+  name: String
+  optionalAuthorInfo: String
+}
+
 type ComponentElementsImage {
   alternativeText: String!
   id: ID!
@@ -222,7 +247,7 @@ input FloatFilterInput {
   startsWith: Float
 }
 
-union GenericMorph = ComponentElementsImage | ComponentElementsLink | ComponentLayoutNavigation | ComponentLayoutPage | ComponentLayoutSeo | I18NLocale | Post | Tag | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser
+union GenericMorph = ComponentElementsAuthor | ComponentElementsImage | ComponentElementsLink | ComponentLayoutNavigation | ComponentLayoutPage | ComponentLayoutSeo | I18NLocale | Post | Tag | Testimonial | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser
 
 type I18NLocale {
   code: String
@@ -376,6 +401,8 @@ input LongFilterInput {
 type Mutation {
   createPost(data: PostInput!): PostEntityResponse
   createTag(data: TagInput!): TagEntityResponse
+  createTestimonial(data: TestimonialInput!, locale: I18NLocaleCode): TestimonialEntityResponse
+  createTestimonialLocalization(data: TestimonialInput, id: ID, locale: I18NLocaleCode): TestimonialEntityResponse
   createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
 
   """Create a new role"""
@@ -385,6 +412,7 @@ type Mutation {
   createUsersPermissionsUser(data: UsersPermissionsUserInput!): UsersPermissionsUserEntityResponse!
   deletePost(id: ID!): PostEntityResponse
   deleteTag(id: ID!): TagEntityResponse
+  deleteTestimonial(id: ID!, locale: I18NLocaleCode): TestimonialEntityResponse
   deleteUploadFile(id: ID!): UploadFileEntityResponse
 
   """Delete an existing role"""
@@ -412,6 +440,7 @@ type Mutation {
   updateFileInfo(id: ID!, info: FileInfoInput): UploadFileEntityResponse!
   updatePost(data: PostInput!, id: ID!): PostEntityResponse
   updateTag(data: TagInput!, id: ID!): TagEntityResponse
+  updateTestimonial(data: TestimonialInput!, id: ID!, locale: I18NLocaleCode): TestimonialEntityResponse
   updateUploadFile(data: UploadFileInput!, id: ID!): UploadFileEntityResponse
 
   """Update an existing role"""
@@ -499,6 +528,8 @@ type Query {
   posts(filters: PostFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): PostEntityResponseCollection
   tag(id: ID): TagEntityResponse
   tags(filters: TagFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): TagEntityResponseCollection
+  testimonial(id: ID, locale: I18NLocaleCode): TestimonialEntityResponse
+  testimonials(filters: TestimonialFiltersInput, locale: I18NLocaleCode, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): TestimonialEntityResponseCollection
   uploadFile(id: ID): UploadFileEntityResponse
   uploadFiles(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileEntityResponseCollection
   usersPermissionsRole(id: ID): UsersPermissionsRoleEntityResponse
@@ -576,6 +607,59 @@ input TagInput {
 
 type TagRelationResponseCollection {
   data: [TagEntity!]!
+}
+
+type Testimonial {
+  author: ComponentElementsAuthor!
+  createdAt: DateTime
+  locale: String
+  localizations(filters: TestimonialFiltersInput, pagination: PaginationArg = {}, publicationState: PublicationState = LIVE, sort: [String] = []): TestimonialRelationResponseCollection
+  publishedAt: DateTime
+  slug: String!
+  text: String!
+  title: String!
+  updatedAt: DateTime
+}
+
+type TestimonialEntity {
+  attributes: Testimonial
+  id: ID
+}
+
+type TestimonialEntityResponse {
+  data: TestimonialEntity
+}
+
+type TestimonialEntityResponseCollection {
+  data: [TestimonialEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+input TestimonialFiltersInput {
+  and: [TestimonialFiltersInput]
+  createdAt: DateTimeFilterInput
+  id: IDFilterInput
+  locale: StringFilterInput
+  localizations: TestimonialFiltersInput
+  not: TestimonialFiltersInput
+  or: [TestimonialFiltersInput]
+  publishedAt: DateTimeFilterInput
+  slug: StringFilterInput
+  text: StringFilterInput
+  title: StringFilterInput
+  updatedAt: DateTimeFilterInput
+}
+
+input TestimonialInput {
+  author: ComponentElementsAuthorInput
+  publishedAt: DateTime
+  slug: String
+  text: String
+  title: String
+}
+
+type TestimonialRelationResponseCollection {
+  data: [TestimonialEntity!]!
 }
 
 """A time string with format HH:mm:ss.SSS"""
