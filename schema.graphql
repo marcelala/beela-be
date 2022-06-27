@@ -418,7 +418,7 @@ type Mutation {
   """Delete an existing role"""
   deleteUsersPermissionsRole(id: ID!): UsersPermissionsDeleteRolePayload
 
-  """Update an existing user"""
+  """Delete an existing user"""
   deleteUsersPermissionsUser(id: ID!): UsersPermissionsUserEntityResponse!
 
   """Confirm an email users email address"""
